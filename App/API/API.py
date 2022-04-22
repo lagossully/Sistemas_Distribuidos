@@ -14,11 +14,11 @@ def dict_factory(cursor, row):
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Distant Reading Archive</h1>
-<p>A prototype API for distant reading of science fiction novels.</p>
+    return '''<h1>Prototipo robado</h1>
+<p>El comienzo de una larga tarea.</p>
 <input type="text"></input>
-<button>lol</button>
-<a href="/api/v1/resources/books/all" >Login</a>'''
+<button>botón en proceso</button>
+<a href="/api/v1/resources/books/all" >Todos los libros</a>'''
 
 
 @app.route('/api/v1/resources/books/all', methods=['GET'])
@@ -34,7 +34,7 @@ def api_all():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return "<h1>404</h1><p>The resource could not be found.</p>", 404
+    return "<h1>404</h1><p>The resource could not be found.</p><a href ='/'>Inicio</a>", 404
 
 
 @app.route('/api/v1/resources/books', methods=['GET'])
