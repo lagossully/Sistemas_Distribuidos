@@ -1,6 +1,8 @@
+from tkinter.tix import Form
 import flask
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, redirect, render_template, jsonify, make_response
 import sqlite3
+from wtforms import Form, StringField, SelectField
 
 
 app = flask.Flask(__name__)
@@ -10,23 +12,23 @@ def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
-    return d
+
+conn = sqlite3.connect('books.db')
+conn.row_factory = dict_factory
+cur = conn.cursor()
 
 
-@app.route('/', methods=['GET'])
+
+
+
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return 
-    '''<h1>Prototipo robado</h1>
-    <p>El comienzo de una larga tarea.</p>
-    <form method="POST">
-        <input name="text">
-        <input type="submit">
-    </form>
-    <form action="/api/v1/resources/books/?author="+text">
-        <input type="submit" value="Buscar" />
-    </form>
-    <br>
-    <a href="/api/v1/resources/books/all" >Todos los libros</a>'''
+    if request.method == "¨POST":
+        articulo = request.form['articulo']
+        all_books = cur.execute('SELECT * FROM books;').fetchall()  
+        return render_template('search.html', data=all_books)
+    return render_template('home.html')
+
 
 
 @app.route('/', methods=['POST'])
@@ -35,7 +37,7 @@ def my_form_post():
     processed_text = text.upper()
     return processed_text
 
-@app.route('/api/v1/resources/books/all', methods=['GET'])
+@app.route('/all', methods=['GET'])
 def api_all():
     conn = sqlite3.connect('books.db')
     conn.row_factory = dict_factory
@@ -51,10 +53,9 @@ def no_encontrado(e):
     return "<h1>404</h1><p>No se encontró la página</p><a href ='/'>Inicio</a>", 404
 
 
-@app.route('/api/v1/resources/books', methods=['GET'])
+@app.route('/productos', methods=['GET'])
 def api_filter():
     query_parameters = request.args
-
     id = query_parameters.get('id')
     published = query_parameters.get('published')
     author = query_parameters.get('author')
