@@ -1,6 +1,7 @@
 import flask
-from flask import request, jsonify
+from flask import Flask, request, render_template, jsonify
 import sqlite3
+
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -14,12 +15,14 @@ def dict_factory(cursor, row):
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Prototipo robado</h1>
-<p>El comienzo de una larga tarea.</p>
-<input type="text"></input>
-<button>botón en proceso</button>
-<a href="/api/v1/resources/books/all" >Todos los libros</a>'''
+    return render_template('my-form.html')
 
+
+@app.route('/api/v1/resources/books', methods=['POST'])
+def my_form_post():
+    text = request.form['text']
+    processed_text = text.upper()
+    return processed_text
 
 @app.route('/api/v1/resources/books/all', methods=['GET'])
 def api_all():
@@ -33,8 +36,8 @@ def api_all():
 
 
 @app.errorhandler(404)
-def page_not_found(e):
-    return "<h1>404</h1><p>The resource could not be found.</p><button href =''/''>Inicio</button>", 404
+def no_encontrado(e):
+    return "<h1>404</h1><p>No se encontró la página</p><a href ='/'>Inicio</a>", 404
 
 
 @app.route('/api/v1/resources/books', methods=['GET'])
@@ -58,7 +61,7 @@ def api_filter():
         query += ' author=? AND'
         to_filter.append(author)
     if not (id or published or author):
-        return page_not_found(404)
+        return no_encontrado(404)
 
     query = query[:-4] + ';'
 
