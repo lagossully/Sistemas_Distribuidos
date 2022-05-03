@@ -15,7 +15,7 @@ def dict_factory(cursor, row):
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('my-form.html')
+    return render_template('home.html')
 
 
 @app.route('/api/v1/resources/books', methods=['POST'])
