@@ -1,4 +1,5 @@
 import redis
+import sys
 
 r = redis.Redis(host='localhost', port=6379)
 
@@ -9,10 +10,10 @@ r.set("kotor","knigths of the old republic")
 def redis_consulta():
         try:
             print("Ingrese parametros")
-            b = input()
+            b = str(sys.argv[1])
 
             if (r.exists(b)):
-                print((r.get("lol")))
+                print((r.get(b)))
             else:
                 print("no existe")
             ###PREGUNTAR A GRPC CLIENT QUE LE DIGA A GRPC SERVER BUSCAR LOS DATOS
