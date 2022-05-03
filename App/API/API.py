@@ -3,7 +3,7 @@ import flask
 from flask import Flask, request, redirect, render_template, jsonify, make_response
 import sqlite3
 from wtforms import Form, StringField, SelectField
-
+import os 
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -15,8 +15,8 @@ app.config["DEBUG"] = True
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == "¨POST":
-        return render_template('home.html')
-    return render_template('home.html')
+        os.system("Test.py 1")
+    os.system("Test.py 1")
 
 
 
