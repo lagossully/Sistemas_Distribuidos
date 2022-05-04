@@ -17,16 +17,16 @@ app.config["DEBUG"] = True
 def home():
     if request.method == "¨POST":
         os.system("python Test.py")  
-        return "hola"
-    os.system("python Test.py kotor")
-    return "hola"
+        return "Por favor revisar la consola"
+    os.system("python Test.py")
+    return "Por favor revisar la consola"
 
 
 
 
 @app.route('/all', methods=['GET'])
 def api_all():
-    return render_template('home.html')
+    return "Por favor revisar la consola"
 
 
 @app.errorhandler(404)
