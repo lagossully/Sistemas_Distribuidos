@@ -1,0 +1,13 @@
+version:
+
+
+services:
+  zookeeper:
+   image: wurstmeister/zookeeper
+   ports:
+      -
+
+  kafka: 
+    image: wurstmeister/kafka
+    ports: 
+      -  
