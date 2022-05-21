@@ -1,16 +1,11 @@
 from ensurepip import bootstrap
 import time
 import json
-import random
 from datetime import datetime
-
+from login  import getlogin
 from kafka import KafkaProducer
 
 
-
-
-def serializer(loginT):
-    return json.dumps(loginT).encode('utf-8')
 
 #kafka Producer
 producer = KafkaProducer(
@@ -19,10 +14,10 @@ producer = KafkaProducer(
 )
 
 if __name__ == "__main__":
-    while true:
+    while True:
         # generar intento de login
-        login_try = get_login()
-
+        login_try = getlogin()
+        
 
         # enviar intento de login
         print(f'intento de login @{datetime.now()} | login = {str(login_try)}')
