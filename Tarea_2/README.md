@@ -1,7 +1,10 @@
 # Sistemas_Distribuidos
 
 # Acerca del proyecto:
-Este proyecto es hecho por Diego Lagos y Lucas Peñailillo para el ramo 'Sistemas Distribuidos', esta carpeta está dedicada a la tarea 2.
+Este proyecto es hecho por Diego Lagos y Lucas Peñailillo para el ramo 'Sistemas Distribuidos', esta carpeta está dedicada a la tarea 2. La solución está compuesta de 3 partes, primero que todo está el lado del usuario, que está compuesto por la API(API.py), ésta llama al productor (Producer.py) el cual obtiene una dupla de login aleatoria desde un par de archivos (credencialesRandomID.json, credencialesRandomPass.json) mediante el archivo login.py. Una vez introducida la dupla aleatoria se consulta en un archivo (blocked.json) si la cuenta está bloqueada, si está bloqueada se le notifica al usuario, en el caso de que no lo esté pueden ocurrir dos cosas: 1- que las credenciales estén correctas, en este caso se le notifica al usuario el login. 2- que las credenciales estén incorrectas, en este caso se registran la hora de la consulta y el ID de la cuenta, si es el 5to intento que se produce en el mismo minuto la cuenta será bloqueada.
+
+# ¿Como ejecutar?
+
 
 # Preguntas Tarea
 1- ¿Por qué Kafka funciona bien en este escenario?
