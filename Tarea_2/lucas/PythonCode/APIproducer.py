@@ -25,4 +25,5 @@ def no_encontrado(e):
     return "<h1>404</h1><p>No se encontró la página</p><a href ='/'>Inicio</a>", 404
 
 
-app.run()
+if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=444)

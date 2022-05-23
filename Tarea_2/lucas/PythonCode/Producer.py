@@ -4,16 +4,20 @@ import json
 from datetime import datetime
 from login  import getlogin
 from kafka import KafkaProducer
+import requests
 
 
 def serializer(login):
     return json.dumps(login).encode('uft-8')
 
 def funcproducer():
-    f= open('../Jsons/BDD_ID.json')
-    g= open('../Jsons/bloked.json')
-    BDD_ID=json.load(f)
+    #f= open('../Jsons/BDD_ID.json')
+    #BDD_ID=json.load(f)
+    ##LUCAAS ENVÉS DE ESTAS DOS LINEAS: response = requests.get('localhost:80/algoalgo' ) O response = requests.post('localhost:80/algoalgo', data = {'key':'value'})
+    BDD_ID = requests.get('localhost:80/correctID')
+    g= open('../Jsons/blocked.json')
     Blocked=json.load(g)
+    ##LUCAAS ENVÉS DE ESTAS DOS LINEAS: response = requests.get('localhost:80/algoalgo' ) O response = requests.post('localhost:80/algoalgo', data = {'key':'value'})
     print(BDD_ID)
     producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
              api_version=(0,11,5)
