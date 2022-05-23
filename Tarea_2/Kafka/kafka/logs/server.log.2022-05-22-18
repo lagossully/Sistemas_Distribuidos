@@ -1,0 +1,12 @@
+[2022-05-22 18:59:54,808] INFO Reading configuration from: .\config\server.properties (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
+[2022-05-22 18:59:54,843] ERROR Invalid config, exiting abnormally (org.apache.zookeeper.server.quorum.QuorumPeerMain)
+org.apache.zookeeper.server.quorum.QuorumPeerConfig$ConfigException: Error processing .\config\server.properties
+	at org.apache.zookeeper.server.quorum.QuorumPeerConfig.parse(QuorumPeerConfig.java:198)
+	at org.apache.zookeeper.server.quorum.QuorumPeerMain.initializeAndRun(QuorumPeerMain.java:124)
+	at org.apache.zookeeper.server.quorum.QuorumPeerMain.main(QuorumPeerMain.java:90)
+Caused by: java.lang.IllegalArgumentException: dataDir is not set
+	at org.apache.zookeeper.server.quorum.QuorumPeerConfig.parseProperties(QuorumPeerConfig.java:444)
+	at org.apache.zookeeper.server.quorum.QuorumPeerConfig.parse(QuorumPeerConfig.java:194)
+	... 2 more
+[2022-05-22 18:59:54,874] INFO ZooKeeper audit is disabled. (org.apache.zookeeper.audit.ZKAuditProvider)
+[2022-05-22 18:59:54,891] ERROR Exiting JVM with code 2 (org.apache.zookeeper.util.ServiceUtils)

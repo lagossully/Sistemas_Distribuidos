@@ -2,8 +2,6 @@ from tkinter.tix import Form
 import flask
 from flask import Flask, request, redirect, render_template, jsonify, make_response
 from wtforms import Form, StringField, SelectField
-import os 
-import login
 from Producer import funcproducer
 
 app = flask.Flask(__name__)
@@ -20,10 +18,6 @@ def home():
 
 
 
-
-@app.route('/all', methods=['GET'])
-def api_all():
-    return "Por favor revisar la consola"
 
 
 @app.errorhandler(404)
