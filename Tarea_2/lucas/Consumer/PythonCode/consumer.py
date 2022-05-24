@@ -1,14 +1,18 @@
+from concurrent.futures import thread
 from ensurepip import bootstrap
 import json
 from kafka import KafkaConsumer
 import time
 import datetime
+from numpy import tri
+from pyparsing import trace_parse_action
+from Tarea_2.lucas.Consumer.PythonCode.verificador import BDD_ID, BDD_logs, authenticator
+import verificador as V
+import threading
 
 
-if __name__ == "__main__":
-    
 
-    #kafka consumer
+def consume():
     consumer = KafkaConsumer(
         'sample',
         bootstrap_servers=['localhost:9092'],
@@ -16,8 +20,27 @@ if __name__ == "__main__":
     )
     for loginT in consumer:
         print(json.loads(loginT.value))
-        ##ACÁ GUARDAR EN JSON LA HORA Y EL USUARIO
+        if(V.Blockeado()):         
+            authenticator(loginT)
+        else:
+            stringlogin=str(loginT)
+            stringDenied = "Lo sentimos su cuenta se encuentra Bloqueada"
+            print(stringDenied)
+            print(stringlogin)
+            stringDenied + stringlogin
+        ##ACÁ GUARDAR EN JSON LA HORA Y EL USUARIO 
+def Seguridad():
+    for data in BDD_ID:
+        triblock = [x for x in BDD_logs if x["ID"] == data["ID"] and x["Acceso"]=="False"]
+        
+        for i in range(0,len(triblock)):
+            if(triblock[i]["Fecha"] - triblock[i-1]["Fecha"] <= datetime.datetime.strptime("01",'%M') and triblock[i]["Fecha"] - triblock[i-2]["Fecha"]<= datetime.datetime.strptime("01",'%M') and triblock[i]["Fecha"] - triblock[i-3]["Fecha"]<= datetime.datetime.strptime("01",'%M') and triblock[i]["Fecha"] - triblock[i-4]["Fecha"]<= datetime.datetime.strptime("01",'%M')):
+                
+    return
+
+if __name__ == "__main__":
+    Hilo1 = threading.Thread(target=consume())
+    Hilo2 = threading.Thread(target=Seguridad())
     
-    for message in consumer:
-        print (message)
-        ##ACÁ GUARDAR EN JSON LA HORA Y EL USUARIO
+    
+    

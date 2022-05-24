@@ -31,6 +31,10 @@ def CoID():
     g= open('../Jsons/BDD_ID.json')
     CID=json.load(g)
     return str(CID)
+    
+@app.route('/Login', methods=['GET', 'POST'])
+def LoginTry(Logindata):
+    return str(Logindata)
 
 
 @app.errorhandler(404)
