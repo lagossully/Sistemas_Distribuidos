@@ -4,4 +4,5 @@ COPY . /usr/src/app/
 WORKDIR /usr/src/app/
 EXPOSE 5000
 RUN pip install -r requirements.txt
-CMD ["python", "APIproducer.py"]
+RUN cd PythonCode
+CMD ["python", "APIbasededatos.py"]
