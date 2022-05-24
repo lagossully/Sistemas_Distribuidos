@@ -1,13 +1,19 @@
 from tkinter.tix import Form
 import flask
 from flask import Flask, request, redirect, render_template, jsonify, make_response
-from wtforms import Form, StringField, SelectField
 import json
 from datetime import datetime
-from login  import getlogin
+from Tarea_2.lucas.Consumer.PythonCode.consumer import consumermain
+import consumer
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    consumermain()
+    return 
 
 
 @app.route('/blocked', methods=['GET', 'POST'])

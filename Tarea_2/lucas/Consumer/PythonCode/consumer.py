@@ -15,7 +15,7 @@ import threading
 def consume():
     consumer = KafkaConsumer(
         'sample',
-        bootstrap_servers=['localhost:9092'],
+        bootstrap_servers=['kafka:9092'],
         auto_offset_reset='earliest'
     )
     for loginT in consumer:
@@ -38,9 +38,10 @@ def Seguridad():
                 Bloquear(data)
     return
 
-if __name__ == "__main__":
-    Hilo1 = threading.Thread(target=consume())
-    Hilo2 = threading.Thread(target=Seguridad())
+def consumermain():
+    while True:
+        Hilo1 = threading.Thread(target=consume())
+        Hilo2 = threading.Thread(target=Seguridad())
     
     
     
