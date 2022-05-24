@@ -12,15 +12,16 @@ BDD_ID=json.load(f)
 BDD_Blocked=json.load(g)
 BDD_logs=json.load(j)
 print(BDD_logs)
+
 def Bloquear(cuenta):
     for i in range(0,len(BDD_Blocked)):
         if cuenta["ID"] == BDD_Blocked[i]["ID"]:
             BDD_Blocked[i]["blocked"] = "1"
     with open('../Jsons/blocked.json',"w") as file:
         json.dump(BDD_Blocked,file)
-
-    
+    requests
     return
+
 def addLog(Login,Acceso):
     entry={
         "ID": Login["ID"],
