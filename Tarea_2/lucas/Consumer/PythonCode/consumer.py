@@ -6,7 +6,7 @@ import time
 import datetime
 from numpy import tri
 from pyparsing import trace_parse_action
-from Tarea_2.lucas.Consumer.PythonCode.verificador import BDD_ID, BDD_logs, authenticator
+from Tarea_2.lucas.Consumer.PythonCode.verificador import BDD_ID, BDD_logs, authenticator, Bloquear
 import verificador as V
 import threading
 
@@ -35,7 +35,7 @@ def Seguridad():
         
         for i in range(0,len(triblock)):
             if(triblock[i]["Fecha"] - triblock[i-1]["Fecha"] <= datetime.datetime.strptime("01",'%M') and triblock[i]["Fecha"] - triblock[i-2]["Fecha"]<= datetime.datetime.strptime("01",'%M') and triblock[i]["Fecha"] - triblock[i-3]["Fecha"]<= datetime.datetime.strptime("01",'%M') and triblock[i]["Fecha"] - triblock[i-4]["Fecha"]<= datetime.datetime.strptime("01",'%M')):
-                
+                Bloquear(data)
     return
 
 if __name__ == "__main__":
