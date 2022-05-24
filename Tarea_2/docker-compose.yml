@@ -29,6 +29,15 @@ services:
     networks:
       - Sistem
   
+  Consumer:
+    build: ./Consumer/
+    networks:
+      - Sistem
+    ports:
+      - "80:80"
+    volumes:
+      - ./Consumer:/app
+
   Producer:
     build: ./Producer/
     networks:
@@ -38,11 +47,3 @@ services:
     volumes:
       - ./Producer:/app
 
-  Consumer:
-    build: ./Consumer/
-    networks:
-      - Sistem
-    ports:
-      - "80:80"
-    volumes:
-      - ./Consumer:/app

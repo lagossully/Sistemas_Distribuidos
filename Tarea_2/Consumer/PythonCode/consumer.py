@@ -6,7 +6,7 @@ import time
 import datetime
 from numpy import tri
 from pyparsing import trace_parse_action
-from Tarea_2.lucas.Consumer.PythonCode.verificador import BDD_ID, BDD_logs, authenticator, Bloquear
+from Tarea_2.Consumer.PythonCode.verificador import BDD_ID, BDD_logs, authenticator, Bloquear
 import verificador as V
 import threading
 

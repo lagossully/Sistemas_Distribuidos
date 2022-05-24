@@ -3,7 +3,7 @@ import flask
 from flask import Flask, request, redirect, render_template, jsonify, make_response
 import json
 from datetime import datetime
-from Tarea_2.lucas.Consumer.PythonCode.consumer import consumermain
+from Tarea_2.Consumer.PythonCode.consumer import consumermain
 import consumer
 
 app = flask.Flask(__name__)
