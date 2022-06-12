@@ -6,11 +6,10 @@ from datetime import datetime
 from cassandra.cluster import Cluster
 
 cluster = Cluster(['0.0.0.0'],port=3000)
-session = cluster.connect('cityinfo',wait_for_all_pools=True)
-session.execute('USE cityinfo')
-rows = session.execute('SELECT * FROM users')
-for row in rows:
-    print(row.age,row.name,row.username)
+session = cluster.connect()
+session.execute('CREATE KEYSPACE IF NOT EXISTS Cass')
+session.execute('CREATE TABLE IF NOT EXISTS paciente (rut int, nombre text, apellido text, email text, fecha_nacimiento text, PRIMARY KEY (rut))')
+session.execute('CREATE TABLE IF NOT EXISTS receta (id_paciente int, comentario text, farmacos text, doctor text, PRIMARY KEY (id_paciente)')
 
 
 app = flask.Flask(__name__)

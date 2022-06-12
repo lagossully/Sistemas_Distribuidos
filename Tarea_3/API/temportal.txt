@@ -1,0 +1,9 @@
+
+  Consumer:
+    build: ./API/
+    networks:
+      - Sistem
+    ports:
+      - "80:80"
+    volumes:
+      - ./Consumer:/app
