@@ -1,0 +1,57 @@
+version: "3.7"
+networks:    
+  Sistem:
+    driver: bridge
+services:  
+
+  Consumer:
+    build: ./API/
+    networks:
+      - Sistem
+    ports:
+      - "80:80"
+    volumes:
+      - ./Consumer:/app
+      
+  node1:
+    container_name: node-1
+    image: bitnami/cassandra:4.0.4
+    volumes:
+      - ./cassandra-data:/docker-entrypoint-initdb.d
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_SEEDS=node1,node2,node3
+      - CASSANDRA_PASSWORD_SEEDER=yes
+      - CASSANDRA_DATACENTER=datacenter1
+      - CASSANDRA_USERNAME=cassandra
+      - CASSANDRA_PASSWORD=cassandra 
+    networks:
+      - Sistem
+
+  node2:
+    container_name: node-2
+    image: bitnami/cassandra:4.0.4
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_SEEDS=node1,node2,node3
+      - CASSANDRA_DATACENTER=datacenter1
+      - CASSANDRA_USERNAME=cassandra
+      - CASSANDRA_PASSWORD=cassandra 
+    links:
+      - node1
+    networks:
+      - Sistem
+
+  node3:
+    container_name: node-3
+    image: bitnami/cassandra:4.0.4
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_SEEDS=node1,node2,node3
+      - CASSANDRA_DATACENTER=datacenter1
+      - CASSANDRA_USERNAME=cassandra
+      - CASSANDRA_PASSWORD=cassandra 
+    links:
+      - node1
+    networks:
+      - Sistem
