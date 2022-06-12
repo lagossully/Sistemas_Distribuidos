@@ -12,7 +12,7 @@ Entrar en una consola y ejecutar el comando 'docker-compose up'. Se debería ###
 Cassandra tiene una arquitectura cluster tipo anillo (con los nodos distribuidos lógicamente en un loop), está diseñado sin nodo tipo maestro/esclavo. Con los datos distribuidos automáticamente por todos los nodos para tener redundancia mediante llaves hasheadas. Soporta múltiples anillos (centros de datos) o racks (grupos de nodos dentro del anillo) y conexión entre ellos.
 Cuando se crea un cluster, los nodos se reconocen mediante una IP local. Se debe configurar el archivo cassandra.yaml en listen_address para lograr esto. #####.
 Cuando se realiza una petición desde un cliente, el nodo al que se está conectando se convierte en el coordinador de la transacción con el cliente, luego se hace la query solicitada. El nodo coordinador decide que nodos reciben la query.
-En el caso de que un nodo se desconecte, ### https://docs.datastax.com/en/cassandra-oss/3.x/cassandra/architecture/archDataDistributeFailDetect.html
+En el caso de que un nodo se desconecte, ###
 La red generada en los nodos no siempre es eficiente por que ####
 No existe balanceo de carga en su estado base, para esto se utilizan otros implementos externos en la red.
 
