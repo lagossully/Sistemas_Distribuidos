@@ -19,8 +19,8 @@ No existe balanceo de carga en su estado base, para esto se utilizan otros imple
 2- Cassandra posee principalmente dos estrategias para mantener redundancia en la replicación de datos. ¿Cuáles son estos? ¿Cuál es la ventaja de uno sobre otro? ¿Cuál utilizaría usted para en el caso actual y por qu ́e? Justifique apropiadamente su respuesta.
 
 Cassandra tiene 2 estratégias de replicación, Simple Strategy y NetworkTopology Strategy.
-Simple Strategy coloca réplicas de datos en los nodos adyacentes en el anillo, se usa para un solo datacenter o rack.
-NetworkTopology Strategy se utiliza cuando los datos tienen que estar en múltiples centros de datos, específicando cuantas réplicas se requiere en cada datacenter, intenta guardas réplicas en racks distintos por si falla un rack entero.
+Simple Strategy coloca réplicas de datos en un nodo seleccionado y luego en los nodos adyacentes a este en el anillo, se usa para un solo datacenter o rack.
+NetworkTopology Strategy se utiliza cuando los datos tienen que estar en múltiples centros de datos, específicando cuantas réplicas se requiere en cada datacenter, intenta guardas réplicas en racks distintos por si falla un rack entero, las réplicas. ###<- arreglar lo anterior de networktopology###
 Para el caso actual, se recomienda utilizar la estrategia Simple Strategy ya que se utiliza solo un contenedor con 3 nodos y no se necesita más complejidad de replicación que simple strategy.
 
 3-Teniendo en cuenta el contexto del problema ¿Usted cree que la soluci ́on propuesta es la correcta? ¿Qué ocurre cuando se quiere escalar en la solución? ¿Qué mejoras implementaría? Oriente su respuesta hacia el Sharding (la replicación/distribución de los datos) y comente una estrategia que podría seguir para ordenar los datos.
