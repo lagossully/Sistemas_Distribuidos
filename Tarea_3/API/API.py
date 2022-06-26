@@ -60,7 +60,7 @@ def home():
     VALUES (%(id)s, %(id_paciente)s, %(comentario)s, %(farmacos)s, %(doctor)s)
     """,
     {'id':1,'id_paciente':RandomID, 'comentario':" uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas", 'farmacos':"Samexid 50mg", 'doctor': "Yuri Dragcnic" }
-)
+    )
     return 
 
 @app.route('/edit', methods=['GET', 'POST'])
