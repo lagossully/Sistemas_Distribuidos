@@ -1,0 +1,1 @@
+create keyspace Cass with replication = {'class': 'SimpleStrategy', 'datacenter1': '2'};
