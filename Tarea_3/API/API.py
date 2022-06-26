@@ -76,7 +76,7 @@ def home():
 
     session.execute(
     """
-    update receta set comentario=%s where id_paciente = %s ALLOW FILTERING
+    update receta set comentario=%s where id_paciente = %s
     
     """,
     {'se extiende la receta por 7 días más',RandomID}
@@ -87,4 +87,16 @@ def home():
 
 @app.route('/delete', methods=['GET', 'POST'])
 def home():
+    IdsDisponibles = [1, 2, 3, 4, 5]
+    RandomID = random.choice(IdsDisponibles)
+
+    session.execute(
+    """
+    DELETE FROM receta WHERE id = %s
+    
+    """,
+    {'se extiende la receta por 7 días más',RandomID}
+    
+    )
+    
     return 
