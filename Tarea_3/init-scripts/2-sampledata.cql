@@ -12,3 +12,18 @@ VALUES 4, 203249283, 'Diego', 'Lagos', 'diego.lagos@gmail.com', '15/07/1997';
 
 INSERT INTO paciente (id, rut, nombre, apellido, email, fecha_nacimiento)
 VALUES  5, 196868943, 'Iman', 'Jarufe', 'iman.jarufe@gmail.com', '14/10/1997';
+
+INSERT INTO receta (id, id_paciente, comentario, farmacos, doctor)
+VALUES (1, 1, 'uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas', 'Samexid 50mg', 'Yuri Dragcnic';
+
+INSERT INTO receta (id, id_paciente, comentario, farmacos, doctor)
+VALUES (2, 2, 'uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas', 'Samexid 50mg', 'Yuri Dragcnic';
+
+INSERT INTO receta (id, id_paciente, comentario, farmacos, doctor)
+VALUES (3, 3, 'uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas', 'Samexid 50mg', 'Yuri Dragcnic';
+
+INSERT INTO receta (id, id_paciente, comentario, farmacos, doctor)
+VALUES (4, 4, 'uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas', 'Samexid 50mg', 'Yuri Dragcnic';
+
+INSERT INTO receta (id, id_paciente, comentario, farmacos, doctor)
+VALUES (5, 5, 'uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas', 'Samexid 50mg', 'Yuri Dragcnic';

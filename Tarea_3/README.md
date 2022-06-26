@@ -2,11 +2,15 @@
 
 # Acerca del proyecto:
 Este proyecto es hecho por Diego Lagos y Lucas Peñailillo para el ramo 'Sistemas Distribuidos', ésta carpeta está dedicada a la tarea 3. La solución está compuesta de 4 partes (contenedores):
-- El primero es un contenedor llamado backendpython el cual es una API que se mantiene en espera de métodos POST y GET, tiene 3 métodos: 1- el método /create crea una receta aleatoria. 2- el método /edit edita una receta y cambia el comentario por "se extiende la receta por 7 días más". 3- el método /delete elimina la receta del último ID. Finalmente este contenedor se conecta al primer nodo de Apache Cassandra.
-- Los otros contenedores son nodos de Apache Cassandra que se comunican entre si. Estos se encargan de guardar los datos ingresados por el cliente. Uno va a ser responsable de la interacción con el cliente, si este se conecta, el nodo responsable va a ser el mediador de la conexión.
+- El primero es un contenedor llamado backendpython el cual es una API que se monta gracias al script Python API.py (ver para referencia del funcionamiento), este se mantiene en espera gracias a Flask, espera los métodos POST y GET, tiene 3 métodos: 1- el método /create crea una receta aleatoria. 2- el método /edit edita una receta y cambia el comentario por "se extiende la receta por 7 días más". 3- el método /delete elimina la receta del último ID. Finalmente este contenedor se conecta al primer nodo de Apache Cassandra.
+- Los otros contenedores son nodos de Apache Cassandra que se comunican entre si. Estos se encargan de guardar los datos ingresados por el cliente. El nodo 1 crea el keyspace, las tablas y rellena estas con unos cuantos datos.
 
 # ¿Como ejecutar?
-Entrar en una consola y ejecutar el comando 'docker-compose up'. Se debería #############
+Entrar en una consola y ejecutar el comando 'docker-compose up'. Se deberían crear los 4 nodos anteriormente mencionados.
+Abrir un navegador y acceder a las siguientes direcciones para hacer sus funciones:
+- `localhost:5555/create` crea una receta para un paciente aleatorio
+- `localhost:5555/edit` cambia el valor específico 'comentario' de una receta de un paciente aleatorio
+- `localhost:5555/delete` borra una receta con un id aleatorio
 
 # Preguntas Tarea
 1-Explique la arquitectura que Cassandra maneja. Cuando se crea el cluster ¿Cómo los nodos se conectan? ¿Qué ocurre cuando un cliente realiza una petición a uno de los nodos? ¿Qué ocurre cuando uno de los nodos se desconecta? ¿La red generada entre los nodos siempre es eficiente? ¿Existe balanceo de carga?
