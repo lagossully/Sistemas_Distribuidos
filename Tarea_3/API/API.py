@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, render_template, jsonify, make_respo
 import json
 from datetime import datetime
 from cassandra.cluster import Cluster
+import random
 
 cluster = Cluster(['127.0.0.1'],port=3000)
 session = cluster.connect()
@@ -56,17 +57,25 @@ def home():
 
 @app.route('/create', methods=['GET', 'POST'])
 def home():
+    IdsDisponibles = [1, 2, 3, 4, 5]
+    RandomID = random.choice(IdsDisponibles)
+
     session.execute(
     """
     INSERT INTO receta (id, id_paciente, comentario, farmacos, doctor)
     VALUES (%(id)s, %(id_paciente)s, %(comentario)s, %(farmacos)s, %(doctor)s)
     """,
-    {'id':1,'id_paciente':1, 'comentario':" uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas", 'farmacos':"Samexid 50mg", 'doctor': "Yuri Dragcnic" }
+    {'id':1,'id_paciente':RandomID, 'comentario':" uno por dia, tomar despues del desayuno, los efectos duran aproximadamente 8 horas", 'farmacos':"Samexid 50mg", 'doctor': "Yuri Dragcnic" }
 )
     return 
 
 @app.route('/edit', methods=['GET', 'POST'])
 def home():
+    IdsDisponibles = [1, 2, 3, 4, 5]
+    RandomID = random.choice(IdsDisponibles)
+
+    session.execute('update receta set comentario=%s where id_paciente = %s ALLOW FILTERING', ('se extiende la receta por 7 días más',RandomID))
+
     return
 
 @app.route('/delete', methods=['GET', 'POST'])
