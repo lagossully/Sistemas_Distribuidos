@@ -1,50 +1,38 @@
-version: '3.8'
-networks:
-  Sistem:
-    driver: bridge
+version: '2'
 services:
-
-
-  backendpython:
-    build: ./Api/
-    networks:
-      - Sistem
-    ports:
-      - "3000:3000"
-
   cassandra-node1:
-    image: bitnami/cassandra:4.0.4
+    image: bitnami/cassandra:latest
     volumes:
-      - ./cassandra-data:/docker-entrypoint-initdb.d
+      - ./init-scripts:/docker-entrypoint-initdb.d
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
       - CASSANDRA_PASSWORD_SEEDER=yes
-      - CASSANDRA_USERNAME=cassandra
-      - CASSANDRA_PASSWORD=cassandra 
-    networks:
-      - Sistem
+      - CASSANDRA_PASSWORD=password123
+      - CASSANDRA_DATACENTER=datacenter1
 
   cassandra-node2:
-    image: bitnami/cassandra:4.0.4
+    image: bitnami/cassandra:latest
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_USERNAME=cassandra
-      - CASSANDRA_PASSWORD=cassandra 
-    links:
-      - cassandra-node1
-    networks:
-      - Sistem
+      - CASSANDRA_PASSWORD=password123
+      - CASSANDRA_DATACENTER=datacenter1
 
   cassandra-node3:
-    image: bitnami/cassandra:4.0.4
+    image: bitnami/cassandra:latest
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_USERNAME=cassandra
-      - CASSANDRA_PASSWORD=cassandra 
-    links:
+      - CASSANDRA_PASSWORD=password123
+      - CASSANDRA_DATACENTER=datacenter1
+
+  web-app:
+    build: ./API
+    environment:
+      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+      - CASSANDRA_PASSWORD=password123
+    ports:
+      - 5555:5555
+    depends_on:
       - cassandra-node1
-    networks:
-      - Sistem
