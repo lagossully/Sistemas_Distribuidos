@@ -1,50 +1,32 @@
+from re import A
 import flask as F
 from flask import Flask, request, redirect, render_template, jsonify, make_response
 import json
 from datetime import datetime
 from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
 import random
+import os
+import socket
 
-cluster = Cluster(['127.0.0.1'],port=3000)
-session = cluster.connect()
-session.execute('CREATE KEYSPACE IF NOT EXISTS Cass')
-session.execute('CREATE TABLE IF NOT EXISTS paciente (id int, rut int, nombre text, apellido text, email text, fecha_nacimiento text, PRIMARY KEY (rut))')
-session.execute('CREATE TABLE IF NOT EXISTS receta (id,id_paciente int, comentario text, farmacos text, doctor text, PRIMARY KEY (id_paciente)')
-session.execute(
-    """
-    INSERT INTO paciente (id, rut, nombre, apellido, email, fecha_nacimiento)
-    VALUES (%(id)s, %(rut)s, %(nombre)s, %(apellido)s, %(email)s, %(fecha_nacimiento)s)
-    """,
-    {'id': 1, 'rut': 196469060, 'nombre': "Lucas", 'apellido': "Moreno", 'email': "lucas.moreno@gmail.com", 'fecha_nacimiento': "08/04/1997"}
-    )
-session.execute(
-    """
-    INSERT INTO paciente (id, rut, nombre, apellido, email, fecha_nacimiento)
-    VALUES (%(id)s, %(rut)s, %(nombre)s, %(apellido)s, %(email)s, %(fecha_nacimiento)s)
-    """,
-    {'id': 2, 'rut': 191293718, 'nombre': "Ignacio", 'apellido': "Boetcher", 'email': "boetcher.ignacio@gmail.com", 'fecha_nacimiento': "01/11/1997"}
-    )
-session.execute(
-    """
-    INSERT INTO paciente (id, rut, nombre, apellido, email, fecha_nacimiento)
-    VALUES (%(id)s, %(rut)s, %(nombre)s, %(apellido)s, %(email)s, %(fecha_nacimiento)s)
-    """,
-    {'id': 3, 'rut': 193423483, 'nombre': "Cristian", 'apellido': "Villavicencio", 'email': "Criss.Villa@gmail.com", 'fecha_nacimiento': "22/07/1997"}
-    )
-session.execute(
-    """
-    INSERT INTO paciente (id, rut, nombre, apellido, email, fecha_nacimiento)
-    VALUES (%(id)s, %(rut)s, %(nombre)s, %(apellido)s, %(email)s, %(fecha_nacimiento)s)
-    """,
-    {'id': 4, 'rut': 203249283, 'nombre': "Diego", 'apellido': "Lagos", 'email': "diego.lagos@gmail.com", 'fecha_nacimiento': "15/07/1997"}
-    )
-session.execute(
-    """
-    INSERT INTO paciente (id, rut, nombre, apellido, email, fecha_nacimiento)
-    VALUES (%(id)s, %(rut)s, %(nombre)s, %(apellido)s, %(email)s, %(fecha_nacimiento)s)
-    """,
-    {'id': 5, 'rut': 196868943, 'nombre': "Iman", 'apellido': "Jarufe", 'email': "iman.jarufe@gmail.com", 'fecha_nacimiento': "14/10/1997"}
-    )
+def isOpen(ip, port):
+   test = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   try:
+      test.connect((ip, int(port)))
+      test.shutdown(1)
+      return True
+   except:
+      return False
+
+def fakeLoadBalancer():
+    ips = []
+    port = 9042
+    for ip in os.environ.get('CASSANDRA_SEEDS').split(','):
+        if isOpen(ip, port):
+            ips.append(ip)
+    return ips
+
+
 
 
 app = F.Flask(__name__)
@@ -52,11 +34,23 @@ app.config["DEBUG"] = True
 
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
-    return 
+def cassandra():
+    cluster = Cluster(fakeLoadBalancer(), port=9042, auth_provider=PlainTextAuthProvider(username='cassandra', password=os.environ.get('CASSANDRA_PASSWORD')))
+    session = cluster.connect('Cass', wait_for_all_pools=False)
+    session.execute('USE Cass')
+    result = session.execute('SELECT * FROM paciente')
+    rows = {}
+    for row in result:
+        rows[row.id] = row.name
+    app.logger.info(rows)
+    return rows
+    
 
 @app.route('/create', methods=['GET', 'POST'])
 def home():
+    cluster = Cluster(fakeLoadBalancer(),port=9042, auth_provider=PlainTextAuthProvider(username='cassandra', password=os.environ.get('CASSANDRA_PASSWORD')))
+    session = cluster.connect('Cass', wait_for_all_pools=False)
+    session.execute('USE Cass')
     IdsDisponibles = [1, 2, 3, 4, 5]
     RandomID = random.choice(IdsDisponibles)
 
@@ -71,6 +65,9 @@ def home():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def home():
+    cluster = Cluster(fakeLoadBalancer(),port=9042, auth_provider=PlainTextAuthProvider(username='cassandra', password=os.environ.get('CASSANDRA_PASSWORD')))
+    session = cluster.connect('Cass', wait_for_all_pools=False)
+    session.execute('USE Cass')
     IdsDisponibles = [1, 2, 3, 4, 5]
     RandomID = random.choice(IdsDisponibles)
 
@@ -87,6 +84,9 @@ def home():
 
 @app.route('/delete', methods=['GET', 'POST'])
 def home():
+    cluster = Cluster(fakeLoadBalancer(),port=9042, auth_provider=PlainTextAuthProvider(username='cassandra', password=os.environ.get('CASSANDRA_PASSWORD')))
+    session = cluster.connect('Cass', wait_for_all_pools=False)
+    session.execute('USE Cass')
     IdsDisponibles = [1, 2, 3, 4, 5]
     RandomID = random.choice(IdsDisponibles)
 
@@ -98,5 +98,8 @@ def home():
     {'se extiende la receta por 7 días más',RandomID}
     
     )
-    
     return 
+
+
+if __name__=='__main__':
+      app.run(debug=True,host='0.0.0.0',port=5555)
