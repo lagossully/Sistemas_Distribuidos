@@ -1,11 +1,10 @@
-from tkinter.tix import Form
-import flask
+import flask as F
 from flask import Flask, request, redirect, render_template, jsonify, make_response
 import json
 from datetime import datetime
 from cassandra.cluster import Cluster
 
-cluster = Cluster(['0.0.0.0'],port=3000)
+cluster = Cluster(['127.0.0.1'],port=3000)
 session = cluster.connect()
 session.execute('CREATE KEYSPACE IF NOT EXISTS Cass')
 session.execute('CREATE TABLE IF NOT EXISTS paciente (id int, rut int, nombre text, apellido text, email text, fecha_nacimiento text, PRIMARY KEY (rut))')
@@ -47,7 +46,7 @@ session.execute(
     )
 
 
-app = flask.Flask(__name__)
+app = F.Flask(__name__)
 app.config["DEBUG"] = True
 
 

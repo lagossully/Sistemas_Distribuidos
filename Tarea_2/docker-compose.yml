@@ -29,7 +29,7 @@ services:
     networks:
       - Sistem
   
-  Consumer:
+  consumer:
     build: ./Consumer/
     networks:
       - Sistem
@@ -38,7 +38,7 @@ services:
     volumes:
       - ./Consumer:/app
 
-  Producer:
+  producer:
     build: ./Producer/
     networks:
       - Sistem
