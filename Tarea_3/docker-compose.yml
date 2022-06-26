@@ -1,34 +1,32 @@
 version: '3.8'
 networks:
-  app-tier:
+  Sistem:
     driver: bridge
 services:
 
 
-#  backendPython:
-#    build: ./Api/
-#    networks:
-#      - Sistem
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./Consumer:/app
+  backendpython:
+    build: ./Api/
+    networks:
+      - Sistem
+    ports:
+      - "3000:3000"
 
-  backend:
-      build: ./Api
-      environment:
-        - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3 
-        - CASSANDRA_USERNAME=cassandra
-        - CASSANDRA_PASSWORD=cassandra 
-      depends_on:
-        - cassandra-node1
-        - cassandra-node2
-        - cassandra-node3
-      restart: always
-      ports:
-        - "3000:3000"
-      networks:
-      - app-tier
+  # backend:
+  #     build: ./Api
+  #     environment:
+  #       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3 
+  #       - CASSANDRA_USERNAME=cassandra
+  #       - CASSANDRA_PASSWORD=cassandra 
+  #     depends_on:
+  #       - cassandra-node1
+  #       - cassandra-node2
+  #       - cassandra-node3
+  #     restart: always
+  #     ports:
+  #       - "3000:3000"
+  #     networks:
+  #     - Sistem
   cassandra-node1:
     image: bitnami/cassandra:4.0.4
     volumes:
@@ -40,7 +38,7 @@ services:
       - CASSANDRA_USERNAME=cassandra
       - CASSANDRA_PASSWORD=cassandra 
     networks:
-      - app-tier
+      - Sistem
 
   cassandra-node2:
     image: bitnami/cassandra:4.0.4
@@ -52,7 +50,7 @@ services:
     links:
       - cassandra-node1
     networks:
-      - app-tier
+      - Sistem
 
   cassandra-node3:
     image: bitnami/cassandra:4.0.4
@@ -64,4 +62,4 @@ services:
     links:
       - cassandra-node1
     networks:
-      - app-tier
+      - Sistem
