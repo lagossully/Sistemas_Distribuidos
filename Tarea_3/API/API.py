@@ -74,7 +74,14 @@ def home():
     IdsDisponibles = [1, 2, 3, 4, 5]
     RandomID = random.choice(IdsDisponibles)
 
-    session.execute('update receta set comentario=%s where id_paciente = %s ALLOW FILTERING', ('se extiende la receta por 7 días más',RandomID))
+    session.execute(
+    """
+    update receta set comentario=%s where id_paciente = %s ALLOW FILTERING
+    
+    """,
+    {'se extiende la receta por 7 días más',RandomID}
+    
+    )
 
     return
 
