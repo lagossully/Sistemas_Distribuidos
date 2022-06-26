@@ -1,20 +1,24 @@
-version: "3.7"
-networks:    
-  Sistem:
+version: '3.8'
+networks:
+  app-tier:
     driver: bridge
-services:  
-
-  #API:
-  #  build: ./API/
-  #  networks:
-  #    - Sistem
-  #  ports:
-  #    - "80:80"
-  #  volumes:
-  #    - ./Consumer:/app
-
-  node1:
-    container_name: cassandra-node-1
+services:
+  backend:
+      build: ./Api
+      environment:
+        - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3 
+        - CASSANDRA_USERNAME=cassandra
+        - CASSANDRA_PASSWORD=cassandra 
+      depends_on:
+        - cassandra-node1
+        - cassandra-node2
+        - cassandra-node3
+      restart: always
+      ports:
+        - "3000:3000"
+      networks:
+      - app-tier
+  cassandra-node1:
     image: bitnami/cassandra:4.0.4
     volumes:
       - ./cassandra-data:/docker-entrypoint-initdb.d
@@ -22,36 +26,31 @@ services:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
       - CASSANDRA_PASSWORD_SEEDER=yes
-      - CASSANDRA_DATACENTER=datacenter1
       - CASSANDRA_USERNAME=cassandra
       - CASSANDRA_PASSWORD=cassandra 
     networks:
-      - Sistem
+      - app-tier
 
-  node2:
-    container_name: cassandra-node-2
+  cassandra-node2:
     image: bitnami/cassandra:4.0.4
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_DATACENTER=datacenter1
       - CASSANDRA_USERNAME=cassandra
       - CASSANDRA_PASSWORD=cassandra 
     links:
-      - node1
+      - cassandra-node1
     networks:
-      - Sistem
+      - app-tier
 
-  node3:
-    container_name: cassandra-node-3
+  cassandra-node3:
     image: bitnami/cassandra:4.0.4
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_DATACENTER=datacenter1
       - CASSANDRA_USERNAME=cassandra
       - CASSANDRA_PASSWORD=cassandra 
     links:
-      - node1
+      - cassandra-node1
     networks:
-      - Sistem
+      - app-tier

@@ -1,15 +1,15 @@
 const cassandra = require('cassandra-driver');
 const express = require('express')
+const app = express();
 
 
-//const client1 = new cassandra.Client({
-//    contactPoints: ['cassandra-node1', 'cassandra-node2'],
-//    localDataCenter: 'datacenter1',
-//    keyspace: 'cassandra_keyspace1',
-//    authProvider: new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassandra')
-//  });
-
+var port = process.env.PORT || 3000;
+var host = process.env.PORT || '0.0.0.0';
 const contactPoints = ['127.0.0.1'];
+
+const {
+    v4: uuidv4
+  } = require('uuid');
 
 const client = new cassandra.Client({
     contactPoints: contactPoints,
