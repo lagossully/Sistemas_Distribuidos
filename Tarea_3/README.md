@@ -32,3 +32,10 @@ Abrir un navegador y acceder a las siguientes direcciones para hacer sus funcion
 - Se cree que la solución es bastante acertada para la tarea, ya que son pocas tablas y nodos.
 - Si se quiere escalar se va a encontrar con problemas de rendimiento, en este caso la solución podría ser mejor.
 - Los cambios propuestos son 1-distribuir los datos de mejor forma, en varios racks y con replicación en varios racks (de forma NetworkTopology Strategy) para evitar la carga y peligro de pérdida del centro. 2-Si los datos son muy complejos se aconseja utilizar sharding del tipo aleatoria, ya que genera un balanceo de carga natural.
+
+
+# Detalles No solucinados
+
+- El nodo 1 de cassandra corre bien entre 30 segundos y un minuto y se cae. 
+
+- La Coneccion entre Cluster y script esta incompleta, hubo errores que no se pudieron solucionar, pero los comandos segun la documentacion de la libreria cassandra-driver esta bien.
