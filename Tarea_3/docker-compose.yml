@@ -1,38 +1,56 @@
-version: '2'
+version: "2"
+
+networks:
+  app-tier:
+    driver: bridge
+
 services:
-  cassandra-node1:
+  cassandra_node_1:
     image: bitnami/cassandra:latest
+    networks:
+      - app-tier
+    environment:
+      - CASSANDRA_SEEDS= cassandra_node_1, cassandra_node_2, cassandra_node_3
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
-    environment:
-      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_PASSWORD_SEEDER=yes
-      - CASSANDRA_PASSWORD=password123
-      - CASSANDRA_DATACENTER=datacenter1
-
-  cassandra-node2:
+    
+  cassandra_node_2:
     image: bitnami/cassandra:latest
+    networks:
+      - app-tier
     environment:
+      - CASSANDRA_SEEDS= cassandra_node_1, cassandra_node_2, cassandra_node_3
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_PASSWORD=password123
-      - CASSANDRA_DATACENTER=datacenter1
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
 
-  cassandra-node3:
+
+  cassandra_node_3:
     image: bitnami/cassandra:latest
+    networks:
+      - app-tier
     environment:
+      - CASSANDRA_SEEDS= cassandra_node_1, cassandra_node_2, cassandra_node_3
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_PASSWORD=password123
-      - CASSANDRA_DATACENTER=datacenter1
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
 
-  web-app:
+    
+  api:
     build: ./API
-    environment:
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_PASSWORD=password123
+    networks:
+      - app-tier
     ports:
-      - 5555:5555
+      - "5555:5555"
     depends_on:
-      - cassandra-node1
+      - cassandra_node_1
+      - cassandra_node_2
+      - cassandra_node_3
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 30

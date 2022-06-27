@@ -25,9 +25,15 @@ def fakeLoadBalancer():
         if isOpen(ip, port):
             ips.append(ip)
     return ips
-
-
-
+def ConectCassandraCluster():
+    nodos = ['cassandra_node_1', 'cassandra_node_2', 'cassandra_node_3']
+    port = 9042
+    auth_provider = PlainTextAuthProvider(username='cassandra', password='cassandra')
+    cluster = Cluster(contact_points=nodos, port=port, auth_provider= auth_provider)
+    session = cluster.connect()
+    session.execute('USE Cass')
+    print(session.execute('SELECT * FROM paciente'))
+    return session
 
 app = F.Flask(__name__)
 app.config["DEBUG"] = True
@@ -64,7 +70,7 @@ def home():
     return 
 
 @app.route('/edit', methods=['GET', 'POST'])
-def home():
+def editar():
     cluster = Cluster(fakeLoadBalancer(),port=9042, auth_provider=PlainTextAuthProvider(username='cassandra', password=os.environ.get('CASSANDRA_PASSWORD')))
     session = cluster.connect('Cass', wait_for_all_pools=False)
     session.execute('USE Cass')
@@ -83,7 +89,7 @@ def home():
     return
 
 @app.route('/delete', methods=['GET', 'POST'])
-def home():
+def eliminar():
     cluster = Cluster(fakeLoadBalancer(),port=9042, auth_provider=PlainTextAuthProvider(username='cassandra', password=os.environ.get('CASSANDRA_PASSWORD')))
     session = cluster.connect('Cass', wait_for_all_pools=False)
     session.execute('USE Cass')
@@ -100,6 +106,6 @@ def home():
     )
     return 
 
-
+session = ConectCassandraCluster()
 if __name__=='__main__':
       app.run(debug=True,host='0.0.0.0',port=5555)

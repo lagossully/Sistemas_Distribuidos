@@ -1,1 +1,2 @@
-create keyspace Cass with replication = {'class': 'SimpleStrategy', 'datacenter1': '2'};
+-- Create a keyspace
+CREATE KEYSPACE IF NOT EXISTS Cass WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '2' };
